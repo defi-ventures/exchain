@@ -3,10 +3,9 @@ package types
 import (
 	"fmt"
 
-	"gopkg.in/yaml.v2"
-
 	"github.com/ethereum/go-ethereum/core/vm"
 	"github.com/okex/okexchain/x/params"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -17,7 +16,6 @@ const (
 
 // Parameter keys
 var (
-	ParamStoreKeyEVMDenom                    = []byte("EVMDenom")
 	ParamStoreKeyEnableCreate                = []byte("EnableCreate")
 	ParamStoreKeyEnableCall                  = []byte("EnableCall")
 	ParamStoreKeyExtraEIPs                   = []byte("EnableExtraEIPs")
