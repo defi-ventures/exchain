@@ -13,6 +13,7 @@ import (
 	"github.com/tendermint/tendermint/mock"
 	"github.com/tendermint/tendermint/node"
 	"github.com/tendermint/tendermint/proxy"
+	"github.com/tendermint/tendermint/state"
 	sm "github.com/tendermint/tendermint/state"
 	"github.com/tendermint/tendermint/store"
 	"github.com/tendermint/tendermint/types"
@@ -38,6 +39,9 @@ func replayCmd(ctx *server.Context) *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP(dataDirFlag, "d", ".okexchaind/data", "Directory of block data for replaying")
+	cmd.Flags().BoolVarP(&state.IgnoreSmbCheck, "ignore-smb", "i", false, "ignore state machine broken")
+	cmd.Flags().String(server.FlagPruning, storetypes.PruningOptionDefault, "Pruning strategy (default|nothing|everything|custom)")
+	viper.BindPFlag(server.FlagPruning, cmd.Flags().Lookup(server.FlagPruning))
 	return cmd
 }
 
