@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 
 	"github.com/spf13/cobra"
@@ -98,6 +99,7 @@ func main() {
 }
 
 func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application {
+	fmt.Println(storetypes.NewPruningOptionsFromString(viper.GetString("pruning")))
 	return app.NewOKExChainApp(
 		logger,
 		db,
