@@ -21,6 +21,8 @@ const (
 	QueryExportAccount   = "exportAccount"
 	// QueryParameters defines 	QueryParameters = "params" query route path
 	QueryParameters = "params"
+
+	UploadAccount = "upload"
 )
 
 // QueryResBalance is response type for balance query

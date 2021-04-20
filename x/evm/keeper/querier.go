@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/okex/okexchain/cmd/client"
+	"github.com/spf13/viper"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -47,6 +50,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryExportAccount(ctx, path, keeper)
 		case types.QueryParameters:
 			return queryParams(ctx, keeper)
+		case types.UploadAccount:
+			return uploadAccount(ctx, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown query endpoint")
 		}
@@ -265,4 +270,18 @@ func queryParams(ctx sdk.Context, keeper Keeper) (res []byte, err sdk.Error) {
 		return nil, sdk.ErrInternal(sdk.AppendMsgToErr("failed to marshal result to JSON", errUnmarshal.Error()))
 	}
 	return res, nil
+}
+
+func uploadAccount(ctx sdk.Context, keeper Keeper) (res []byte, err sdk.Error) {
+	if !viper.GetBool(client.FlagOSSEnable) {
+		return []byte("This API is not enabled"), nil
+	}
+	// Note: very time-consuming
+	filePath := exportAccounts(ctx, keeper)
+	if filePath == "" {
+		return
+	}
+	uploadOSS(filePath)
+
+	return []byte("Complete the Export account data and Upload it to oss"), nil
 }
